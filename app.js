@@ -48,6 +48,11 @@ const songs = [
         title: "woods",
         file: "assets/audio/woods.wav",
         theme: "theme-woods"
+    },
+    {
+        title: "contrast",
+        file: "assets/audio/contrast.wav",
+        theme: "theme-contrast"
     }
 ];
 
@@ -73,6 +78,9 @@ function loadSong(index) {
     // Apply theme
     document.body.className = ''; // Clear all classes
     document.body.classList.add(song.theme);
+
+    // Reset glitch state in case it was stuck
+    document.body.classList.remove('glitch-active');
 
     updatePlayPauseIcon();
 }
@@ -116,6 +124,17 @@ function updateProgress(e) {
 
     // Time display
     trackTime.textContent = `${formatTime(currentTime)} / ${formatTime(duration)}`;
+
+    // --- SPECIAL VISUAL LOGIC FOR 'CONTRAST' ---
+    if (songs[currentIndex].title === "contrast") {
+        // 3:23 = 203 seconds. Let's trigger slightly before and last for a few seconds
+        // to ensure it's noticeable.
+        if (currentTime >= 203 && currentTime < 204.5) {
+            document.body.classList.add('glitch-active');
+        } else {
+            document.body.classList.remove('glitch-active');
+        }
+    }
 }
 
 function setProgress(e) {

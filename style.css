@@ -425,3 +425,82 @@ body.theme-woods #visual-overlay {
     opacity: 0.3;
 }
 @keyframes fogMove { from { background-position: 0 0; } to { background-position: 100px 0; } }
+/* 11. CONTRAST (contrast) - Piano, Black & White, Glitch */
+body.theme-contrast {
+    --bg-color: #000000;
+    --text-color: #ffffff;
+    --accent-color: #ffffff;
+    --secondary-color: #888888;
+    --font-family: 'DM Serif Display', serif;
+    --player-bg: #000000;
+    --player-border: 2px solid #ffffff;
+    --player-radius: 0;
+    --btn-bg: #ffffff;
+    --btn-border: 2px solid #ffffff;
+    --btn-radius: 0;
+    --bar-bg: #333333;
+    --bar-height: 8px;
+    --bar-radius: 0;
+}
+
+body.theme-contrast button {
+    color: #000000;
+}
+
+body.theme-contrast button:hover {
+    background: #000000;
+    color: #ffffff;
+    transform: scale(1.0);
+    border: 2px solid #ffffff;
+}
+
+body.theme-contrast #dynamic-bg {
+    background: linear-gradient(90deg, #000 50%, #fff 50%);
+    background-size: 200% 100%;
+    animation: contrastSplit 10s ease-in-out infinite alternate;
+}
+
+body.theme-contrast #visual-overlay {
+    background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 10px,
+        rgba(255, 255, 255, 0.05) 10px,
+        rgba(255, 255, 255, 0.05) 20px
+    );
+}
+
+@keyframes contrastSplit {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+}
+
+/* Glitch Effect Classes (Toggled via JS) */
+body.theme-contrast.glitch-active {
+    animation: glitch-anim 0.2s infinite;
+}
+
+body.theme-contrast.glitch-active #dynamic-bg {
+    background: repeating-linear-gradient(
+        0deg,
+        #ff0000,
+        #00ff00 2px,
+        #0000ff 4px
+    );
+    filter: invert(1);
+}
+
+body.theme-contrast.glitch-active .player-container {
+    transform: skewX(10deg) skewY(5deg);
+    filter: contrast(200%) saturate(500%);
+    border-color: #ff0000;
+}
+
+@keyframes glitch-anim {
+    0% { transform: translate(0); }
+    20% { transform: translate(-5px, 5px); }
+    40% { transform: translate(-5px, -5px); }
+    60% { transform: translate(5px, 5px); }
+    80% { transform: translate(5px, -5px); }
+    100% { transform: translate(0); }
+}
