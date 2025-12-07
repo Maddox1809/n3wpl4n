@@ -34,46 +34,23 @@
   left: 50%;
   transform: translateX(-50%);
   width: 90%;
-  max-width: 600px;
-  background: rgba(5, 8, 25, 0.45);
-  backdrop-filter: blur(24px);
-  border: 1px solid rgba(100, 140, 255, 0.12);
-  border-radius: 20px;
-  box-shadow: 
-    0 20px 60px rgba(0, 0, 40, 0.5),
-    0 0 100px rgba(100, 140, 255, 0.06),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  max-width: 500px;
+  background: rgba(5, 8, 25, 0.25);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(100, 140, 255, 0.08);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 40, 0.3);
   overflow: visible;
   font-family: 'Space Mono', monospace;
   z-index: 1000;
 }
 
-
-/* Stars around the player */
-.player-container::after {
-  content: '✦ ✧ ★ ✦ ✧';
-  position: absolute;
-  top: -20px;
-  left: 20px;
-  font-size: 10px;
-  letter-spacing: 12px;
-  color: rgba(200, 210, 255, 0.5);
-  animation: twinkleStars 3s ease-in-out infinite;
-  z-index: 10;
-}
-
-@keyframes twinkleStars {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 0.7; }
-}
-
 .track-info h1 {
   color: #e0e0ff;
-  text-shadow: 0 0 20px rgba(122, 140, 255, 0.3);
   font-family: 'Inter', sans-serif;
   font-weight: 300;
-  font-size: medium;
-  letter-spacing: 0.40em;
+  font-size: small;
+  letter-spacing: 0.30em;
   text-transform: lowercase;
 }
 
@@ -82,20 +59,21 @@
 }
 
 .progress-bar-container {
-  background: rgba(100, 140, 255, 0.15);
+  background: rgba(100, 140, 255, 0.1);
 }
 
 .progress-bar {
-  background: linear-gradient(90deg, #5c6bc0 0%, #7a8cff 50%, #9fa8da 100%);
-  box-shadow: 0 0 10px rgba(122, 140, 255, 0.4);
+  background: linear-gradient(90deg, #5c6bc0 0%, #7a8cff 100%);
 }
 
 .player-container button {
-  color: #c5cae9;
-  background: rgba(100, 139, 255, 0);
-  transition: all 0.3s ease;
+  color: #9a9fc4;
+  background: transparent;
+  border: none;
+  transition: opacity 0.2s ease;
+  opacity: 0.6;
 }
 
 .player-container button:hover {
-  background: rgba(100, 139, 255, 0.026);
+  opacity: 1;
 }
