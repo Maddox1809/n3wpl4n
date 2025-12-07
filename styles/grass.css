@@ -1,0 +1,83 @@
+.page-grass {
+  background: linear-gradient(180deg, #1b5e20 0%, #388e3c 45%, #8bc34a 100%);
+  color: #f2ffe5;
+}
+
+.page-grass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.2) 1px, transparent 2px);
+  background-size: 12px 12px;
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.page-grass .page-card {
+  background: rgba(0, 50, 10, 0.55);
+  border-color: rgba(214, 255, 190, 0.3);
+  color: #f2ffe5;
+}
+
+.page-grass .tag {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(214, 255, 190, 0.6);
+  color: #f2ffe5;
+}
+
+/* ========== PLAYER STYLES - Grass/Nature Theme ========== */
+.player-container {
+  background: rgba(40, 70, 40, 0.6);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(165, 214, 167, 0.3);
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(27, 94, 32, 0.3);
+  font-family: 'Nunito', sans-serif;
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 600px;
+  z-index: 1000;
+  overflow: visible;
+}
+
+@keyframes grassSway {
+  0%, 100% { transform: rotate(-2deg); }
+  50% { transform: rotate(2deg); }
+}
+
+@keyframes butterflyFloat {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  25% { transform: translateY(-5px) translateX(3px); }
+  75% { transform: translateY(-3px) translateX(-3px); }
+}
+
+.track-info h1 {
+  color: #f1f8e9;
+}
+
+.track-info p {
+  color: #dcedc8;
+}
+
+.progress-bar-container {
+  background: rgba(165, 214, 167, 0.25);
+}
+
+.progress-bar {
+  background: linear-gradient(90deg, #66BB6A 0%, #81C784 50%, #AED581 100%);
+}
+
+.player-container button {
+  color: white;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 14px;
+}
+
+.player-container button:hover {
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 0 15px rgba(129, 199, 132, 0.4);
+}

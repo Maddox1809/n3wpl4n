@@ -1,60 +1,96 @@
+// PRODUCTION: Only 00h49outside is active. Other songs kept for future releases.
 const songs = [
     {
         title: "00h49outside",
         file: "assets/audio/00h49outside.wav",
-        theme: "theme-midnight"
+        slug: "00h49outside",
+        view: "pages/00h49outside.html",
+        style: "styles/00h49outside.css"
+    }
+];
+
+// FUTURE RELEASES - Uncomment songs as they become available:
+/*
+const allSongs = [
+    {
+        title: "00h49outside",
+        file: "assets/audio/00h49outside.wav",
+        slug: "00h49outside",
+        view: "pages/00h49outside.html",
+        style: "styles/00h49outside.css"
     },
     {
         title: "0330",
         file: "assets/audio/0330.wav",
-        theme: "theme-sunset"
+        slug: "0330",
+        view: "pages/0330.html",
+        style: "styles/0330.css"
     },
     {
         title: "autumn",
         file: "assets/audio/autumn.wav",
-        theme: "theme-autumn"
+        slug: "autumn",
+        view: "pages/autumn.html",
+        style: "styles/autumn.css"
     },
     {
         title: "birds",
         file: "assets/audio/birds.wav",
-        theme: "theme-sky"
+        slug: "birds",
+        view: "pages/birds.html",
+        style: "styles/birds.css"
     },
     {
         title: "grass",
         file: "assets/audio/grass.wav",
-        theme: "theme-grass"
+        slug: "grass",
+        view: "pages/grass.html",
+        style: "styles/grass.css"
     },
     {
         title: "pixelated",
         file: "assets/audio/pixelated.wav",
-        theme: "theme-pixel"
+        slug: "pixelated",
+        view: "pages/pixelated.html",
+        style: "styles/pixelated.css"
     },
     {
         title: "meow",
         file: "assets/audio/meow.wav",
-        theme: "theme-meow"
+        slug: "meow",
+        view: "pages/meow.html",
+        style: "styles/meow.css"
     },
     {
         title: "sungod",
         file: "assets/audio/sungod.wav",
-        theme: "theme-sun"
+        slug: "sungod",
+        view: "pages/sungod.html",
+        style: "styles/sungod.css"
     },
     {
         title: "SWID",
         file: "assets/audio/SWID.wav",
-        theme: "theme-swat"
+        slug: "swid",
+        view: "pages/swid.html",
+        style: "styles/swid.css"
     },
     {
         title: "woods",
         file: "assets/audio/woods.wav",
-        theme: "theme-woods"
+        slug: "woods",
+        view: "pages/woods.html",
+        style: "styles/woods.css"
     },
     {
         title: "contrast",
         file: "assets/audio/contrast.wav",
-        theme: "theme-contrast"
+        slug: "contrast",
+        view: "pages/contrast.html",
+        style: "styles/contrast.css"
     }
 ];
+*/
 
 let currentIndex = 0;
 let isPlaying = false;
@@ -69,31 +105,7 @@ const nextBtn = document.getElementById('next-btn');
 const progressBar = document.getElementById('progress-bar');
 const progressContainer = document.getElementById('progress-container');
 const trackTime = document.getElementById('track-time');
-
-function loadSong(index) {
-    const song = songs[index];
-    trackName.textContent = song.title;
-    audioPlayer.src = song.file;
-
-    // Apply theme
-    document.body.className = ''; // Clear all classes
-    document.body.classList.add(song.theme);
-
-    // Reset glitch state in case it was stuck
-    document.body.classList.remove('glitch-active');
-
-    updatePlayPauseIcon();
-}
-
-function togglePlay() {
-    if (isPlaying) {
-        audioPlayer.pause();
-    } else {
-        audioPlayer.play().catch(e => console.log("Playback failed needs interaction first", e));
-    }
-    isPlaying = !isPlaying;
-    updatePlayPauseIcon();
-}
+const viewRoot = document.getElementById('view-root');
 
 function updatePlayPauseIcon() {
     if (isPlaying) {
@@ -105,31 +117,125 @@ function updatePlayPauseIcon() {
     }
 }
 
+async function loadSong(index) {
+    const song = songs[index];
+    trackName.textContent = song.title;
+    trackTime.textContent = `${formatTime(audioPlayer.currentTime)} / ${formatTime(audioPlayer.duration)}`;
+    audioPlayer.src = song.file;
+
+    // mark body for per-track CSS hooks
+    document.body.dataset.track = song.slug;
+    document.body.classList.remove('glitch-active');
+
+    await Promise.all([
+        loadView(song),
+        ensureTrackStyle(song.style)
+    ]);
+
+    updatePlayPauseIcon();
+}
+
+async function loadView(song) {
+    try {
+        const res = await fetch(song.view, { cache: 'no-cache' });
+        if (!res.ok) throw new Error(`Failed to load view for ${song.title}`);
+        const html = await res.text();
+        await swapView(html);
+    } catch (err) {
+        console.error(err);
+        viewRoot.innerHTML = `<div class="view-loading">Could not load view.</div>`;
+    }
+}
+
+function ensureTrackStyle(href) {
+    return new Promise((resolve, reject) => {
+        let link = document.getElementById('track-style');
+        if (link && link.dataset.href === href) {
+            resolve();
+            return;
+        }
+
+        if (!link) {
+            link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.id = 'track-style';
+            document.head.appendChild(link);
+        }
+
+        link.onload = () => resolve();
+        link.onerror = () => reject(new Error(`Failed to load stylesheet ${href}`));
+        link.dataset.href = href;
+        link.href = href;
+    });
+}
+
+function swapView(html) {
+    return new Promise((resolve) => {
+        const finishFadeOut = () => {
+            viewRoot.innerHTML = html;
+            requestAnimationFrame(() => {
+                viewRoot.classList.remove('view-fading');
+                resolve();
+            });
+        };
+
+        viewRoot.classList.add('view-fading');
+        const onTransitionEnd = () => {
+            viewRoot.removeEventListener('transitionend', onTransitionEnd);
+            finishFadeOut();
+        };
+
+        viewRoot.addEventListener('transitionend', onTransitionEnd, { once: true });
+        setTimeout(finishFadeOut, 900); // fallback if transition is skipped
+    });
+}
+
+function togglePlay() {
+    if (audioPlayer.paused) {
+        audioPlayer.play().catch(e => console.log('Playback requires interaction first', e));
+    } else {
+        audioPlayer.pause();
+    }
+}
+
 function playNext() {
+    const shouldResume = !audioPlayer.paused;
     currentIndex = (currentIndex + 1) % songs.length;
-    loadSong(currentIndex);
-    if (isPlaying) audioPlayer.play();
+    loadSong(currentIndex).then(() => {
+        if (shouldResume) audioPlayer.play();
+    });
 }
 
 function playPrev() {
+    const shouldResume = !audioPlayer.paused;
     currentIndex = (currentIndex - 1 + songs.length) % songs.length;
-    loadSong(currentIndex);
-    if (isPlaying) audioPlayer.play();
+    loadSong(currentIndex).then(() => {
+        if (shouldResume) audioPlayer.play();
+    });
 }
+
+// Smooth 60fps progress bar animation
+function animateProgressBar() {
+    const { duration, currentTime } = audioPlayer;
+    if (duration && !Number.isNaN(duration) && !audioPlayer.paused) {
+        const percent = (currentTime / duration) * 100;
+        progressBar.style.width = `${percent}%`;
+    }
+    requestAnimationFrame(animateProgressBar);
+}
+
+// Start the animation loop
+requestAnimationFrame(animateProgressBar);
 
 function updateProgress(e) {
     const { duration, currentTime } = e.srcElement;
-    const progressPercent = (currentTime / duration) * 100;
-    progressBar.style.width = `${progressPercent}%`;
+    const percent = duration && !Number.isNaN(duration) ? (currentTime / duration) * 100 : 0;
+    progressBar.style.width = `${percent}%`;
 
-    // Time display
     trackTime.textContent = `${formatTime(currentTime)} / ${formatTime(duration)}`;
 
-    // --- SPECIAL VISUAL LOGIC FOR 'CONTRAST' ---
-    if (songs[currentIndex].title === "contrast") {
-        // 3:23 = 203 seconds. Let's trigger slightly before and last for a few seconds
-        // to ensure it's noticeable.
-        if (currentTime >= 203 && currentTime < 204.5) {
+    if (songs[currentIndex].slug === 'contrast') {
+        if (currentTime >= 203) {
             document.body.classList.add('glitch-active');
         } else {
             document.body.classList.remove('glitch-active');
@@ -138,14 +244,15 @@ function updateProgress(e) {
 }
 
 function setProgress(e) {
-    const width = this.clientWidth;
+    const width = progressContainer.clientWidth;
     const clickX = e.offsetX;
     const duration = audioPlayer.duration;
+    if (!duration || Number.isNaN(duration)) return;
     audioPlayer.currentTime = (clickX / width) * duration;
 }
 
 function formatTime(seconds) {
-    if (isNaN(seconds)) return "0:00";
+    if (Number.isNaN(seconds) || !Number.isFinite(seconds)) return '0:00';
     const minutes = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
     return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
@@ -159,9 +266,18 @@ audioPlayer.addEventListener('timeupdate', updateProgress);
 audioPlayer.addEventListener('ended', playNext);
 progressContainer.addEventListener('click', setProgress);
 
-// Use 'loadedmetadata' to update total duration display immediately when song loads
 audioPlayer.addEventListener('loadedmetadata', () => {
     trackTime.textContent = `${formatTime(audioPlayer.currentTime)} / ${formatTime(audioPlayer.duration)}`;
+});
+
+audioPlayer.addEventListener('play', () => {
+    isPlaying = true;
+    updatePlayPauseIcon();
+});
+
+audioPlayer.addEventListener('pause', () => {
+    isPlaying = false;
+    updatePlayPauseIcon();
 });
 
 // Initial Load

@@ -1,0 +1,85 @@
+.page-woods {
+  background: radial-gradient(circle at 50% 20%, rgba(50, 80, 50, 0.35), transparent 35%),
+              linear-gradient(180deg, #020402 0%, #0d120d 45%, #131a13 100%);
+  color: #b5e0b8;
+}
+
+.page-woods::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noise"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noise)" opacity="0.12"/%3E%3C/svg%3E');
+  animation: fogMove 18s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes fogMove { from { transform: translateX(-20px); } to { transform: translateX(20px); } }
+
+.page-woods .page-card {
+  background: rgba(5, 12, 5, 0.75);
+  border-color: rgba(102, 187, 106, 0.35);
+  color: #c4f1c7;
+}
+
+.page-woods .tag {
+  background: rgba(102, 187, 106, 0.15);
+  border-color: rgba(102, 187, 106, 0.5);
+  color: #c4f1c7;
+}
+
+/* ========== PLAYER STYLES - Woods/Foggy Forest Theme ========== */
+.player-container {
+  background: rgba(0, 20, 0, 0.7);
+  backdrop-filter: blur(15px);
+  border: 1px solid #2e7d32;
+  border-radius: 8px;
+  box-shadow: 0 0 30px #000;
+  font-family: 'Creepster', cursive;
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 600px;
+  z-index: 1000;
+  overflow: visible;
+}
+
+@keyframes treeSway {
+  0%, 100% { transform: rotate(-1deg); }
+  50% { transform: rotate(1deg); }
+}
+
+@keyframes eyeBlink {
+  0%, 45%, 55%, 100% { opacity: 0.7; }
+  50% { opacity: 0; }
+}
+
+.track-info h1 {
+  color: #a5d6a7;
+  text-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
+}
+
+.track-info p {
+  color: #2e7d32;
+}
+
+.progress-bar-container {
+  background: rgba(46, 125, 50, 0.3);
+}
+
+.progress-bar {
+  background: linear-gradient(90deg, #1B5E20 0%, #388E3C 50%, #66BB6A 100%);
+}
+
+.player-container button {
+  color: #a5d6a7;
+  background: transparent;
+  border: 1px solid #4caf50;
+  border-radius: 8px;
+}
+
+.player-container button:hover {
+  background: rgba(76, 175, 80, 0.2);
+  box-shadow: 0 0 15px rgba(76, 175, 80, 0.3);
+}

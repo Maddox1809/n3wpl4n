@@ -1,0 +1,141 @@
+.page-contrast {
+  background: linear-gradient(90deg, #000 50%, #fff 50%);
+  color: #000;
+}
+
+.page-contrast .page-card {
+  background: rgba(0, 0, 0, 0.8);
+  border: 2px solid #fff;
+  color: #fff;
+  border-radius: 0;
+}
+
+.page-contrast .tag {
+  background: #fff;
+  color: #000;
+  border-color: #000;
+  border-radius: 0;
+}
+
+body[data-track="contrast"].glitch-active .page-contrast {
+  background: repeating-linear-gradient(135deg, #000 0, #000 24px, #1a0000 24px, #1a0000 48px);
+  color: #ff0000;
+}
+
+body[data-track="contrast"].glitch-active .page-card {
+  background: rgba(26, 0, 0, 0.85);
+  border-color: #ff0000;
+  color: #ff0000;
+  box-shadow: 6px 6px 0 #8b0000;
+  transform: skewX(4deg) skewY(1deg);
+}
+
+body[data-track="contrast"].glitch-active .tag {
+  background: rgba(255, 0, 0, 0.15);
+  border-color: #ff0000;
+  color: #ffb3b3;
+}
+
+/* ========== PLAYER STYLES - Contrast/Piano Theme ========== */
+.player-container {
+  background: #000000;
+  backdrop-filter: none;
+  border: 2px solid #ffffff;
+  border-radius: 0;
+  box-shadow: none;
+  font-family: 'DM Serif Display', serif;
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 600px;
+  z-index: 1000;
+  overflow: visible;
+}
+
+
+
+.track-info h1 {
+  color: #ffffff;
+}
+
+.track-info p {
+  color: #888888;
+}
+
+.progress-bar-container {
+  background: #333333;
+  height: 8px;
+  border-radius: 0;
+}
+
+.progress-bar {
+  background: #ffffff;
+  border-radius: 0;
+}
+
+.player-container button {
+  color: #000000;
+  background: #ffffff;
+  border: 2px solid #ffffff;
+  border-radius: 0;
+}
+
+.player-container button:hover {
+  background: #000000;
+  color: #ffffff;
+  transform: scale(1.0);
+}
+
+/* Glitch Effect - Active State */
+body[data-track="contrast"].glitch-active .player-container {
+  background: #1a0000;
+  border: 3px solid #ff0000;
+  transform: translateX(-50%) skewX(5deg) skewY(2deg);
+  box-shadow: 5px 5px 0 #8b0000;
+  animation: glitch-anim 0.2s linear 12;
+}
+
+body[data-track="contrast"].glitch-active .player-container::before {
+  content: '⚠ ⚠ ⚠';
+  color: #ff0000;
+  animation: glitchText 0.3s steps(2) infinite;
+}
+
+body[data-track="contrast"].glitch-active .player-container::after {
+  background: repeating-linear-gradient(90deg, #ff0000 0, #ff0000 8px, #000 8px, #000 12px);
+  border-color: #ff0000;
+}
+
+body[data-track="contrast"].glitch-active .track-info h1 {
+  color: #ff0000;
+}
+
+body[data-track="contrast"].glitch-active .track-info p {
+  color: #cc0000;
+}
+
+body[data-track="contrast"].glitch-active .progress-bar {
+  background: #ff0000;
+}
+
+body[data-track="contrast"].glitch-active .player-container button {
+  color: #ff0000;
+  border-color: #ff0000;
+  background: rgba(255, 0, 0, 0.1);
+}
+
+@keyframes glitch-anim {
+  0% { transform: translateX(-50%) translate(0); }
+  20% { transform: translateX(-50%) translate(-5px, 5px); }
+  40% { transform: translateX(-50%) translate(-5px, -5px); }
+  60% { transform: translateX(-50%) translate(5px, 5px); }
+  80% { transform: translateX(-50%) translate(5px, -5px); }
+  100% { transform: translateX(-50%) translate(0); }
+}
+
+@keyframes glitchText {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}

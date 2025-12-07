@@ -1,0 +1,88 @@
+.page-sungod {
+  background: radial-gradient(circle at 50% 40%, rgba(255, 230, 120, 0.6), transparent 35%),
+              linear-gradient(160deg, #ffb300 0%, #ff8f00 50%, #b87400 100%);
+  color: #fffbe6;
+}
+
+.page-sungod::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.35) 0%, transparent 35%);
+  mix-blend-mode: screen;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.page-sungod .page-card {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 243, 200, 0.5);
+  color: #fffbe6;
+  box-shadow: 0 20px 50px rgba(255, 158, 13, 0.35);
+}
+
+.page-sungod .tag {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.45);
+  color: #fffbe6;
+}
+
+/* ========== PLAYER STYLES - Sun God/Divine Theme ========== */
+.player-container {
+  background: rgba(255, 215, 0, 0.2);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 20px;
+  box-shadow: 
+    0 0 50px rgba(255, 215, 0, 0.4),
+    0 0 100px rgba(255, 180, 0, 0.2);
+  font-family: 'Cinzel', serif;
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 600px;
+  z-index: 1000;
+  overflow: visible;
+}
+
+@keyframes sunPulse {
+  0%, 100% { transform: translateX(-50%) scale(1); opacity: 1; }
+  50% { transform: translateX(-50%) scale(1.1); opacity: 0.9; }
+}
+
+@keyframes sparkle {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+.track-info h1 {
+  color: #fffde7;
+  text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+}
+
+.track-info p {
+  color: #ff6f00;
+}
+
+.progress-bar-container {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.progress-bar {
+  background: linear-gradient(90deg, #FFD700 0%, #FFA500 50%, #FF8C00 100%);
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.player-container button {
+  color: #fffde7;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid #fff;
+  border-radius: 14px;
+}
+
+.player-container button:hover {
+  background: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+}

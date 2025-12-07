@@ -1,0 +1,80 @@
+.page-birds {
+  background: linear-gradient(180deg, #5cc6ff 0%, #8ee5ff 45%, #f8fbff 100%);
+  color: #0f3d63;
+}
+
+.page-birds::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.7), transparent 30%),
+              radial-gradient(circle at 70% 50%, rgba(255, 255, 255, 0.6), transparent 28%),
+              radial-gradient(circle at 40% 70%, rgba(255, 255, 255, 0.5), transparent 25%);
+  filter: blur(12px);
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+.page-birds .page-card {
+  background: rgba(255, 255, 255, 0.4);
+  border-color: rgba(15, 61, 99, 0.15);
+  color: #0f3d63;
+}
+
+.page-birds .tag {
+  background: rgba(15, 61, 99, 0.12);
+  border-color: rgba(15, 61, 99, 0.3);
+  color: #0f3d63;
+}
+
+/* ========== PLAYER STYLES - Sky/Birds Theme ========== */
+.player-container {
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 30px;
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+  font-family: 'Fredoka', sans-serif;
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 600px;
+  z-index: 1000;
+  overflow: visible;
+}
+
+
+@keyframes birdFloat {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  50% { transform: translateY(-8px) translateX(5px); }
+}
+
+.track-info h1 {
+  color: #1976D2;
+}
+
+.track-info p {
+  color: #64B5F6;
+}
+
+.progress-bar-container {
+  background: rgba(25, 118, 210, 0.2);
+}
+
+.progress-bar {
+  background: linear-gradient(90deg, #64B5F6 0%, #42A5F5 50%, #2196F3 100%);
+}
+
+.player-container button {
+  color: #1976D2;
+  background: white;
+  border: 1px solid rgba(25, 118, 210, 0.3);
+  border-radius: 50%;
+}
+
+.player-container button:hover {
+  background: #E3F2FD;
+  box-shadow: 0 4px 15px rgba(25, 118, 210, 0.2);
+}

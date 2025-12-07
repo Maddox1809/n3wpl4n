@@ -1,27 +1,26 @@
 :root {
-    /* Base Defaults */
-    --bg-color: #121212;
-    --text-color: #ffffff;
+    --bg-color: #080808;
+    --text-color: #f5f5f5;
     --accent-color: #ffffff;
-    --secondary-color: #888888;
+    --secondary-color: #9ca3af;
     --font-family: 'Inter', sans-serif;
-    
-    --player-bg: rgba(255, 255, 255, 0.05);
-    --player-border: none;
-    --player-shadow: none;
-    --player-radius: 16px;
-    --backdrop-blur: 10px;
-    
-    --btn-bg: rgba(255, 255, 255, 0.1);
-    --btn-border: none;
-    --btn-radius: 50%;
-    --btn-hover-scale: 1.1;
-    
-    --bar-bg: rgba(255,255,255,0.2);
-    --bar-height: 4px;
-    --bar-radius: 4px;
-    
-    --transition-speed: 0.8s;
+
+    --player-bg: rgba(15, 15, 20, 0.7);
+    --player-border: 1px solid rgba(255, 255, 255, 0.08);
+    --player-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    --player-radius: 20px;
+    --backdrop-blur: 18px;
+
+    --btn-bg: rgba(255, 255, 255, 0.08);
+    --btn-border: 1px solid rgba(255, 255, 255, 0.12);
+    --btn-radius: 14px;
+    --btn-hover-scale: 1.05;
+
+    --bar-bg: rgba(255, 255, 255, 0.2);
+    --bar-height: 6px;
+    --bar-radius: 6px;
+
+    --transition-speed: 0.6s;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -39,54 +38,77 @@ body {
     transition: background var(--transition-speed), color var(--transition-speed);
 }
 
-#dynamic-bg, #visual-overlay, #theme-particles {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    pointer-events: none;
-    transition: all var(--transition-speed);
+#app-shell {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
 }
 
-#dynamic-bg { z-index: -3; }
-#visual-overlay { z-index: -2; opacity: 0.5; mix-blend-mode: overlay; }
-#theme-particles { z-index: -1; }
+#view-wrapper {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.view-root {
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+    transition: opacity var(--transition-speed) ease;
+}
+
+.view-root.view-fading {
+    opacity: 0;
+}
+
+.view-loading {
+    display: grid;
+    place-items: center;
+    height: 100%;
+    font-size: 1rem;
+    color: var(--secondary-color);
+    letter-spacing: 0.08em;
+}
 
 .player-container {
-    width: 85%;
-    max-width: 450px;
-    padding: 3rem 2rem;
+    position: absolute;
+    left: 50%;
+    bottom: clamp(12px, 4vw, 40px);
+    transform: translateX(-50%);
+    width: min(620px, 90vw);
+    padding: 1.8rem 1.6rem;
     text-align: center;
-    z-index: 10;
+    z-index: 3;
     background: var(--player-bg);
     border: var(--player-border);
     box-shadow: var(--player-shadow);
     border-radius: var(--player-radius);
     backdrop-filter: blur(var(--backdrop-blur));
     transition: all var(--transition-speed);
-    position: relative;
-    overflow: hidden;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 300;
 }
 
-.theme-icon { display: none; /* Hidden by default, enabled per theme */ }
-.theme-icon svg { width: 48px; height: 48px; }
-
 .track-info h1 {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
-    font-weight: 700;
-    letter-spacing: -1px;
+    font-size: clamp(1.4rem, 4vw, 2.2rem);
+    margin-bottom: 0.35rem;
+    font-weight: 400;
+    letter-spacing: -0.02em;
 }
 
 .track-info p {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     color: var(--secondary-color);
     font-feature-settings: "tnum";
 }
 
 .controls-container {
-    margin-top: 2.5rem;
+    margin-top: 1.6rem;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1.6rem;
 }
 
 .progress-bar-container {
@@ -102,14 +124,15 @@ body {
     height: 100%;
     width: 0%;
     background-color: var(--accent-color);
-    transition: width 0.1s linear, background-color var(--transition-speed);
+    transition: background-color var(--transition-speed);
+    /* No width transition - using 60fps requestAnimationFrame for smooth updates */
 }
 
 .buttons {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 1.5rem;
+    gap: 1.25rem;
 }
 
 button {
@@ -118,389 +141,79 @@ button {
     border-radius: var(--btn-radius);
     color: var(--text-color);
     cursor: pointer;
-    width: 60px;
-    height: 60px;
+    width: 64px;
+    height: 64px;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
+    backdrop-filter: blur(8px);
 }
 
 button:hover {
     transform: scale(var(--btn-hover-scale));
-    filter: brightness(1.2);
+    filter: brightness(1.1);
 }
 
-/* =========================================
-   THEME IMPLEMENTATIONS
-   ========================================= */
-
-/* 1. MIDNIGHT (00h49outside) - Cold, Dark, Stars */
-body.theme-midnight {
-    --bg-color: #02020a;
-    --text-color: #e0e0ff;
-    --accent-color: #7a8cff;
-    --secondary-color: #5c5c8a;
-    --font-family: 'Space Mono', monospace;
-    --player-bg: rgba(10, 10, 30, 0.6);
-    --player-border: 1px solid rgba(100, 100, 255, 0.1);
-    --btn-bg: rgba(255, 255, 255, 0.05);
-}
-body.theme-midnight #dynamic-bg {
-    background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
-}
-body.theme-midnight #theme-particles {
-    background-image: 
-        radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 3px),
-        radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 2px),
-        radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 3px);
-    background-size: 550px 550px, 350px 350px, 250px 250px;
-    background-position: 0 0, 40px 60px, 130px 270px;
-    animation: starsMove 100s linear infinite;
-}
-@keyframes starsMove { from { transform: translateY(0); } to { transform: translateY(-550px); } }
-
-
-/* 2. SUNSET (0330) - Evening, Warm Gradient */
-body.theme-sunset {
-    --bg-color: #2d1b4e;
-    --text-color: #fff5e6;
-    --accent-color: #ffbf69;
-    --secondary-color: #ff9f1c;
-    --font-family: 'Outfit', sans-serif;
-    --player-bg: rgba(60, 20, 60, 0.3);
-    --player-radius: 24px;
-    --player-border: 1px solid rgba(255, 200, 150, 0.2);
-    --player-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    --btn-radius: 12px;
-    --btn-bg: rgba(255, 160, 122, 0.2);
-}
-body.theme-sunset #dynamic-bg {
-    background: radial-gradient(circle at 50% 60%, rgba(255, 200, 50, 0.4) 0%, transparent 50%),
-                linear-gradient(180deg, #1a0b2e 0%, #4a2b5a 30%, #d64c7f 60%, #ff9f1c 100%);
-    background-size: 100% 300%;
-    animation: sunsetShift 20s ease infinite alternate;
-}
-@keyframes sunsetShift { 0% { background-position: 50% 40%; } 100% { background-position: 50% 80%; } }
-
-
-/* 3. AUTUMN (autumn) - Leaves, Brown/Red/Orange */
-body.theme-autumn {
-    --bg-color: #3e2723;
-    --text-color: #efebe9;
-    --accent-color: #d84315;
-    --secondary-color: #a1887f;
-    --font-family: 'DM Serif Display', serif;
-    --player-bg: #281a16;
-    --player-border: 2px solid #5d4037;
-    --player-radius: 4px;
-    --bar-height: 2px;
-    --btn-border: 1px solid #8d6e63;
-}
-body.theme-autumn #dynamic-bg {
-    background-color: #3e2723;
-    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 30 L40 20 L50 30 L40 40 Z' fill='%234e342e' fill-opacity='0.4'/%3E%3C/svg%3E");
-}
-body.theme-autumn #track-name { font-style: italic; }
-
-
-/* 4. SKY (birds) - Blue Sky, Clouds, Birds */
-body.theme-sky {
-    --bg-color: #87CEEB;
-    --text-color: #ffffff;
-    --accent-color: #FFEB3B;
-    --secondary-color: #E1F5FE;
-    --font-family: 'Fredoka', sans-serif;
-    --player-bg: rgba(255, 255, 255, 0.4);
-    --player-radius: 30px;
-    --player-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
-    --btn-bg: white;
-    --btn-radius: 50%;
-    --text-color: #1976D2; /* Darker text for contrast against sky */
-}
-body.theme-sky #dynamic-bg {
-    background: linear-gradient(to bottom, #4facfe 0%, #00f2fe 100%);
-}
-body.theme-sky #theme-particles::before, 
-body.theme-sky #theme-particles::after {
-    content: ''; 
-    position: absolute;
-    width: 150px; 
-    height: 60px; 
-    background: rgba(255,255,255,0.8);
-    border-radius: 100px; 
-    filter: blur(12px);
+.page {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: clamp(1rem, 3vw, 2rem);
+    padding: clamp(1.5rem, 5vw, 3.5rem);
+    position: relative;
 }
 
-/* Layer 1: Upper clouds, very slow drift */
-body.theme-sky #theme-particles::before {
-    top: 10%;
-    left: 0;
-    box-shadow: 
-        15vw 5vh 0 -10px rgba(255,255,255,0.6),
-        35vw -2vh 0 10px rgba(255,255,255,0.7),
-        55vw 8vh 0 -5px rgba(255,255,255,0.6),
-        75vw -5vh 0 5px rgba(255,255,255,0.7),
-        95vw 6vh 0 -10px rgba(255,255,255,0.6),
-        
-        25vw 25vh 0 15px rgba(255,255,255,0.5),
-        65vw 20vh 0 5px rgba(255,255,255,0.6),
-        85vw 28vh 0 -5px rgba(255,255,255,0.5);
-    animation: cloudDrift 120s ease-in-out infinite alternate;
+.page-card {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 18px;
+    padding: 1.25rem;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(8px);
 }
 
-/* Layer 2: Lower clouds, slightly different drift for depth */
-body.theme-sky #theme-particles::after {
-    top: 50%;
-    left: -10%;
-    transform: scale(1.2);
-    box-shadow: 
-        10vw 15vh 0 -10px rgba(255,255,255,0.7),
-        40vw 5vh 0 15px rgba(255,255,255,0.6),
-        70vw 10vh 0 -5px rgba(255,255,255,0.7),
-        90vw 0vh 0 10px rgba(255,255,255,0.6),
-        
-        20vw 35vh 0 5px rgba(255,255,255,0.7),
-        60vw 30vh 0 -10px rgba(255,255,255,0.6);
-    animation: cloudDrift 160s ease-in-out infinite alternate-reverse;
+.page-card h2 { margin-bottom: 0.5rem; font-size: 1.2rem; }
+.page-card p { color: rgba(255,255,255,0.85); line-height: 1.5; }
+
+.eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 0.75rem;
+    color: var(--secondary-color);
+    margin-bottom: 0.4rem;
 }
 
-@keyframes cloudDrift { 
-    from { transform: translateX(-20px); } 
-    to { transform: translateX(20px); } 
+.tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
 }
 
-
-/* 5. GRASS (grass) - Green, Nature, View */
-body.theme-grass {
-    --bg-color: #558b2f;
-    --text-color: #f1f8e9;
-    --accent-color: #aed581;
-    --secondary-color: #dcedc8;
-    --font-family: 'Nunito', sans-serif;
-    --player-bg: rgba(40, 70, 40, 0.6);
-    --player-border: 1px solid rgba(165, 214, 167, 0.3);
-    --player-radius: 20px;
-    --player-shadow: 0 10px 30px rgba(27, 94, 32, 0.3);
-    --btn-bg: rgba(255, 255, 255, 0.15);
-    --btn-border: 1px solid rgba(255,255,255,0.2);
-}
-body.theme-grass button { color: white; }
-body.theme-grass #dynamic-bg {
-    background: linear-gradient(to top, #2e7d32 0%, #66bb6a 50%, #81c784 100%);
-}
-body.theme-grass #theme-particles {
-    background-image: 
-        radial-gradient(#cddc39 20%, transparent 20%),
-        radial-gradient(#fff 20%, transparent 20%);
-    background-size: 10px 10px, 20px 20px;
-    background-position: 0 0, 50px 50px;
-    opacity: 0.6;
-    animation: floatingPollen 20s linear infinite;
-}
-@keyframes floatingPollen {
-    0% { background-position: 0 0, 50px 50px; }
-    100% { background-position: 100px 100px, 150px 150px; }
-}
-body.theme-grass #visual-overlay {
-    background: repeating-linear-gradient(90deg, transparent 0, transparent 40px, rgba(255,255,255,0.03) 40px, rgba(255,255,255,0.03) 41px);
-    opacity: 1;
+.tag {
+    padding: 0.35rem 0.65rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.1);
 }
 
+@media (max-width: 640px) {
+    .player-container {
+        width: 94vw;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 1.2rem;
+    }
 
-/* 6 & 7. PIXEL & MEOW (pixelated, meow) - 8-bit, Retro Game */
-body.theme-pixel, body.theme-meow {
-    --bg-color: #222;
-    --font-family: 'Press Start 2P', cursive;
-    --player-radius: 0;
-    --player-shadow: 8px 8px 0px rgba(0,0,0,0.5);
-    --bar-radius: 0;
-    --bar-height: 10px;
-    --btn-radius: 0;
-    image-rendering: pixelated;
-}
-/* Pixel Specific */
-body.theme-pixel {
-    --bg-color: #4b0082; /* Deep Indigo for more color */
-    --text-color: #00ffcc; /* Cyan text for pop */
-    --accent-color: #ff00ff; /* Magenta accent */
-    --secondary-color: #8a2be2;
-    --player-bg: rgba(0, 0, 0, 0.8);
-    --player-border: 4px solid #00ffcc;
-    --btn-border: 2px solid #ff00ff;
-    --btn-bg: rgba(255, 0, 255, 0.1);
-}
-body.theme-pixel #dynamic-bg {
-    background: 
-        linear-gradient(45deg, #4b0082 25%, transparent 25%, transparent 75%, #4b0082 75%, #4b0082),
-        linear-gradient(45deg, #4b0082 25%, transparent 25%, transparent 75%, #4b0082 75%, #4b0082);
-    background-color: #3a006b;
-    background-size: 20px 20px;
-    background-position: 0 0, 10px 10px;
-}
-/* Meow Specific */
-body.theme-meow {
-    --bg-color: #ffe0f0;
-    --text-color: #ff4081;
-    --accent-color: #ff80ab;
-    --secondary-color: #f50057;
-    --player-bg: #fff;
-    --player-border: 4px solid #ff4081;
-    --btn-bg: #ffe0f0;
-    --btn-border: 2px solid #ff4081;
-    --player-shadow: 8px 8px 0px #ff80ab;
+    .buttons { gap: 0.9rem; }
+    button { width: 56px; height: 56px; }
 }
 
-
-/* 8. SUN GOD (sungod) - Bright, Golden, Divine */
-body.theme-sun {
-    --bg-color: #ffb300;
-    --text-color: #fffde7;
-    --accent-color: #ffff00;
-    --secondary-color: #ff6f00;
-    --font-family: 'Cinzel', serif;
-    --player-bg: rgba(255, 215, 0, 0.2);
-    --player-border: 1px solid rgba(255, 255, 255, 0.6);
-    --player-shadow: 0 0 50px rgba(255, 215, 0, 0.4);
-    --btn-bg: rgba(255, 255, 255, 0.2);
-    --btn-border: 1px solid #fff;
-}
-body.theme-sun #dynamic-bg {
-    background: radial-gradient(circle, #ffeb3b 10%, #ff9800 50%, #e65100 100%);
-    animation: pulseSun 4s ease-in-out infinite;
-}
-@keyframes pulseSun { 0% { filter: brightness(1); } 50% { filter: brightness(1.2); } 100% { filter: brightness(1); } }
-@keyframes spin { 100% { transform: rotate(360deg); } }
-
-
-/* 9. SWAT (SWID) - Violent, Cave, Neons, Stencil */
-body.theme-swat {
-    --bg-color: #0a0a0a;
-    --text-color: #cfd8dc;
-    --accent-color: #ff1744; /* Red Alert */
-    --secondary-color: #2979ff; /* Blue Police */
-    --font-family: 'Black Ops One', cursive;
-    --player-bg: #1c1c1c;
-    --player-border: 2px solid #37474f;
-    --player-radius: 2px;
-    --btn-bg: #263238;
-    --btn-radius: 0;
-    --btn-border: 1px solid #546e7a;
-}
-body.theme-swat #dynamic-bg {
-    background: repeating-linear-gradient(45deg, #000 0, #000 10px, #111 10px, #111 20px);
-}
-body.theme-swat #visual-overlay {
-    background: linear-gradient(90deg, transparent 0%, rgba(255, 23, 68, 0.1) 50%, transparent 100%);
-    background-size: 200% 100%;
-    animation: policeLights 1s steps(2) infinite;
-}
-@keyframes policeLights { 
-    0% { background-position: 100% 0; background-color: rgba(255, 23, 68, 0.05); } 
-    50% { background-position: 0% 0; background-color: rgba(41, 121, 255, 0.05); } 
-}
-
-
-/* 10. WOODS (woods) - Lost, Strange Creatures, Foggy */
-body.theme-woods {
-    --bg-color: #1b1f1b;
-    --text-color: #a5d6a7;
-    --accent-color: #66bb6a;
-    --secondary-color: #2e7d32;
-    --font-family: 'Creepster', cursive;
-    --player-bg: rgba(0, 20, 0, 0.7);
-    --player-border: 1px solid #2e7d32;
-    --player-shadow: 0 0 30px #000;
-    --btn-bg: transparent;
-    --btn-border: 1px solid #4caf50;
-    --player-radius: 8px;
-}
-body.theme-woods #dynamic-bg {
-    background-color: #050a05;
-    background-image: radial-gradient(circle at 50% 50%, transparent 0%, #000 80%);
-}
-body.theme-woods #visual-overlay {
-    background: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noise"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noise)" opacity="0.1"/%3E%3C/svg%3E');
-    animation: fogMove 20s linear infinite;
-    opacity: 0.3;
-}
-@keyframes fogMove { from { background-position: 0 0; } to { background-position: 100px 0; } }
-/* 11. CONTRAST (contrast) - Piano, Black & White, Glitch */
-body.theme-contrast {
-    --bg-color: #000000;
-    --text-color: #ffffff;
-    --accent-color: #ffffff;
-    --secondary-color: #888888;
-    --font-family: 'DM Serif Display', serif;
-    --player-bg: #000000;
-    --player-border: 2px solid #ffffff;
-    --player-radius: 0;
-    --btn-bg: #ffffff;
-    --btn-border: 2px solid #ffffff;
-    --btn-radius: 0;
-    --bar-bg: #333333;
-    --bar-height: 8px;
-    --bar-radius: 0;
-}
-
-body.theme-contrast button {
-    color: #000000;
-}
-
-body.theme-contrast button:hover {
-    background: #000000;
-    color: #ffffff;
-    transform: scale(1.0);
-    border: 2px solid #ffffff;
-}
-
-body.theme-contrast #dynamic-bg {
-    background: linear-gradient(90deg, #000 50%, #fff 50%);
-    background-size: 200% 100%;
-    animation: contrastSplit 10s ease-in-out infinite alternate;
-}
-
-body.theme-contrast #visual-overlay {
-    background: repeating-linear-gradient(
-        45deg,
-        transparent,
-        transparent 10px,
-        rgba(255, 255, 255, 0.05) 10px,
-        rgba(255, 255, 255, 0.05) 20px
-    );
-}
-
-@keyframes contrastSplit {
-    0% { background-position: 0% 50%; }
-    100% { background-position: 100% 50%; }
-}
-
-/* Glitch Effect Classes (Toggled via JS) */
-body.theme-contrast.glitch-active {
-    animation: glitch-anim 0.2s infinite;
-}
-
-body.theme-contrast.glitch-active #dynamic-bg {
-    background: repeating-linear-gradient(
-        0deg,
-        #ff0000,
-        #00ff00 2px,
-        #0000ff 4px
-    );
-    filter: invert(1);
-}
-
-body.theme-contrast.glitch-active .player-container {
-    transform: skewX(10deg) skewY(5deg);
-    filter: contrast(200%) saturate(500%);
-    border-color: #ff0000;
-}
-
-@keyframes glitch-anim {
-    0% { transform: translate(0); }
-    20% { transform: translate(-5px, 5px); }
-    40% { transform: translate(-5px, -5px); }
-    60% { transform: translate(5px, 5px); }
-    80% { transform: translate(5px, -5px); }
-    100% { transform: translate(0); }
+/* PRODUCTION: Hide prev/next buttons when only one track is available */
+#prev-btn,
+#next-btn {
+    display: none;
 }

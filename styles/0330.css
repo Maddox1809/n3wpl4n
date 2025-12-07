@@ -1,0 +1,63 @@
+.page-0330 {
+  background: linear-gradient(180deg, #2b0f44 0%, #5c2d5c 40%, #f9b27c 100%);
+  color: #fff3e8;
+}
+
+.page-0330 .page-card {
+  background: rgba(255, 245, 235, 0.1);
+  border-color: rgba(255, 199, 169, 0.5);
+  color: #fff7f0;
+}
+
+.page-0330 .tag {
+  background: rgba(255, 186, 120, 0.2);
+  border-color: rgba(255, 186, 120, 0.6);
+  color: #ffeada;
+}
+
+/* ========== PLAYER STYLES - Sunset/Evening Theme ========== */
+.player-container {
+  background: linear-gradient(135deg, rgba(255, 100, 100, 0.15) 0%, rgba(255, 180, 100, 0.2) 100%);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 180, 130, 0.25);
+  border-radius: 24px;
+  box-shadow: 
+    0 15px 50px rgba(255, 100, 80, 0.15),
+    0 0 80px rgba(255, 150, 50, 0.1);
+  font-family: 'Outfit', sans-serif;
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 600px;
+  z-index: 1000;
+  overflow: visible;
+}
+
+.track-info h1 {
+  color: #fff5e6;
+}
+
+.track-info p {
+  color: #ff9f1c;
+}
+
+.progress-bar-container {
+  background: rgba(255, 180, 130, 0.2);
+}
+
+.progress-bar {
+  background: linear-gradient(90deg, #ff6b35 0%, #ffbf69 50%, #ff9f1c 100%);
+}
+
+.player-container button {
+  color: #fff5e6;
+  background: rgba(255, 160, 122, 0.2);
+  border: 1px solid rgba(255, 180, 130, 0.3);
+  border-radius: 12px;
+}
+
+.player-container button:hover {
+  box-shadow: 0 0 20px rgba(255, 180, 100, 0.4);
+}
